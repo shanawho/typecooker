@@ -89,17 +89,17 @@ struct ContentView: View {
                                               Value("Speedball","",level:3),
                                               Value("Brush","",level:3)]),
         Param(name: "Ascender", values: [Value("None","",level:2),
-                                        Value("Much shorter than normal","",level:2),
-                                        Value("Shorter than normal","",level:2),
-                                        Value("Longer than normal","",level:2),
-                                        Value("Much longer than normal","",level:2),
+                                        Value("Super short","",level:2),
+                                        Value("Short","",level:2),
+                                        Value("Tall","",level:2),
+                                        Value("Super tall","",level:2),
                                         Value("Normal","",level:2)],
               minLevel:  2),
         Param(name: "Descender", values: [Value("None","",level:2),
-                                        Value("Much shorter than normal","",level:2),
-                                        Value("Shorter than normal","",level:2),
-                                        Value("Longer than normal","",level:2),
-                                        Value("Much longer than normal","",level:2),
+                                        Value("Super short","",level:2),
+                                        Value("Short","",level:2),
+                                        Value("Long","",level:2),
+                                        Value("Super long","",level:2),
                                         Value("Normal","",level:2)],
               minLevel: 2),
         Param(name: "Stems", values: [Value("Straight","",level:2),
@@ -126,13 +126,13 @@ struct ContentView: View {
                                       Value("Sketchy","",level:2),
                                       Value("Cut as a stencil","",level:2),
                                       Value("At least 1 ligature","",level:2),
-                                      Value("Initial and final swashes","",level:2),
+                                      Value("Add swashes","",level:2),
                                       Value("At least 2 ligatures","",level:3),
                                       Value("Inktraps","",level:3),
                                       Value("Do it blindfolded","",level:3),
                                       Value("Use physical materials","",level:3),
                                       Value("Do it in 1 minute","",level:3),
-                                      Value("Use a non-Latin language","",level:3)],
+                                      Value("In a non-Latin language","",level:3)],
             minLevel: 3),
         Param(name: "Variable",values: [Value("Width axis","",level:2),
                                         Value("Weight axis","",level:2),
@@ -147,53 +147,54 @@ struct ContentView: View {
     ]
     
     var body: some View {
-        
-//        var geometry = GeometryReader()
-        VStack {
-            HStack {
-                Text("Easy").onTapGesture {
-                    if self.currLevel == 1 {
-                        self.currLevel = 0
-                    }
-                    self.currLevel = 1
-                }
-                Text("Class").onTapGesture {
-                    if self.currLevel == 2 {
-                        self.currLevel = 0
-                    }
-                    self.currLevel = 2
-                }
-                Text("Pro").onTapGesture {
-                    if self.currLevel == 3 {
-                        self.currLevel = 0
-                    }
-                    self.currLevel = 3
-                }
-            }
-            
+//        GeometryReader { geometry in
+            VStack {
                 HStack {
-                    VStack(alignment: .trailing) {
-                        ForEach(params, id:\.name) { param in
+                    Text("Easy").onTapGesture {
+                        if self.currLevel == 1 {
+                            self.currLevel = 0
+                        }
+                        self.currLevel = 1
+                    }
+                    Text("Class").onTapGesture {
+                        if self.currLevel == 2 {
+                            self.currLevel = 0
+                        }
+                        self.currLevel = 2
+                    }
+                    Text("Pro").onTapGesture {
+                        if self.currLevel == 3 {
+                            self.currLevel = 0
+                        }
+                        self.currLevel = 3
+                    }
+                }
+                
+                HStack {
+                    VStack {
+                        ForEach(self.params, id:\.name) { param in
                             Group {
                                 if param.minLevel <= self.currLevel {
                                     Text(param.name).bold()
                                 }
-                            }
+                            }.frame(maxWidth: .infinity, maxHeight: 24, alignment: .trailing).background(Color.blue)
                         }
-                    }.frame(width: UIScreen.main.bounds.width, height: .infinity, alignment: .trailing)
-
-                    VStack(alignment: .leading) {
-                        ForEach(params, id:\.name) { param in
+                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
+                        
+                    VStack {
+                        ForEach(self.params, id:\.name) { param in
                             Group {
                                 if param.minLevel <= self.currLevel {
                                     Text(param.values.filter{$0.level<=self.currLevel}.randomElement()!.name)
                                 }
-                            }
+                            }.frame(maxWidth: .infinity, maxHeight: 24, alignment: .leading).background(Color.green)
                         }
                     }
-                }
-            }
-    }
+                }.frame(maxWidth:.infinity, maxHeight: .infinity).background(Color.red).offset(x:0, y: 0)
+                    
+            }.frame(maxWidth:.infinity, maxHeight: .infinity)
+        }
+//    }
 }
 
 struct ContentView_Previews: PreviewProvider {
